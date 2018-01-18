@@ -1,9 +1,12 @@
-![scrollToolBarView.gif](http://upload-images.jianshu.io/upload_images/4185621-24aec367acb951dc.gif?imageMogr2/auto-orient/strip)
+![scrollToolBarView演示.gif](http://upload-images.jianshu.io/upload_images/4185621-a8d70d578fede614.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+ >[OC: 工具类下载 ](https://github.com/LiPengYue/PYToolBarScrollToolView_OCPOD) 
+pod 'PYToolBarScrollView' 
+[swift：工具下载](https://github.com/LiPengYue/PYToolBarScrollView_SwiftPod/tree/master)
+ pod 'PYToolBarScrollView_Swift'
 
->![关注简书](http://www.jianshu.com/p/880d5e7969ca)
 #一、简介
-这个工具写了很久，一直不满意，换了n种方法，最后毛瑟顿开，用最平常的知识解决了问题。所以很简单，但很巧妙。
+这个工具写了很久，一直不满意，换了n种方法，最后毛瑟顿开，用最平常的知识解决了问题。虽然很简单，但很巧妙。
 > 1. 适用结构： 
 `1. 顶部有一个topView`
 `2. 中间有个选项栏（toolBarView）`
@@ -128,3 +131,43 @@
             self.contentOffset = CGPoint(x: 0, y: newValue.y + self.offset)
         }
 ````
+
+
+---
+#更新：2017.11.15
+**1. PYMidView的扩展**
+
+>1. 对中间的toolBarView的扩展性，进行了修复。添加了一个PYMidView(继承自UIView)，他有个代理属性，`var delegate: PYToolBarViewProtocol?`要求实现一个方法，返回对应的toolBarView,
+>2. 事实上，你只要继承PYMidView，然后在里面布局子控件，并且，把代理属性设置成自己，实现代理方法，就可以完美适应任何产品需求。
+
+***代码**
+```
+import UIKit
+class PYMidView: UIView {
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    var delegate: PYToolBarViewProtocol?
+    private var isFirstSetToolBarUI: Bool = true
+    
+    override func layoutSubviews() {
+        if isFirstSetToolBarUI {
+            self.delegate?.registerToolBarView().displayUI()
+            layoutIfNeeded()
+            isFirstSetToolBarUI = false
+        }
+    }
+}
+
+```
+
+#更新：2018.1.5
+进行了重构，具体思路差不多，只是提高了兼容性，与遗留bug的修复。
+下一步，准备兼容web 滑动的监听。具体看代码：
+ >[OC: 工具类下载 ](https://github.com/LiPengYue/PYToolBarScrollToolView_OCPOD) 
+pod 'PYToolBarScrollView' 
+[swift：工具下载](https://github.com/LiPengYue/PYToolBarScrollView_SwiftPod/tree/master)
+ pod 'PYToolBarScrollView_Swift'
